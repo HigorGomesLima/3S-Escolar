@@ -2,6 +2,8 @@ package sistema;
 
 import objetos.Aluno;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -16,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import objetos.Prova;
 import objetos.Turma;
 
 public class Persistencia {
@@ -85,8 +88,8 @@ public class Persistencia {
         return retorno;
     }
     
-    public void gerarCSVAluno(List<String> comando) throws IOException{
-        FileWriter arq = new FileWriter("ListaDeAluno.csv");
+    public void gerarCSVAluno(List<String> comando,String local) throws IOException{
+        FileWriter arq = new FileWriter(local);
         PrintWriter gravarArq = new PrintWriter(arq);
         Iterator<String> it = comando.iterator();
         while(it.hasNext()){
@@ -94,6 +97,29 @@ public class Persistencia {
             gravarArq.printf(aux+"%n");
         }
         arq.close();
+    }
+    
+    public void adicionarProva(Prova novo){
+        
+    }
+    
+    public List<String> lerCSV(File[] arquivo) throws FileNotFoundException, IOException{
+        List<String> retorno = new ArrayList<>();
+        for(int i = 0; i < arquivo.length; i++){
+            System.out.println(arquivo[i].getName());
+            FileReader arq = new FileReader(arquivo[i]);
+            BufferedReader lerArq = new BufferedReader(arq);
+            String linha = lerArq.readLine();
+            int cont = 0;
+            while(linha != null){
+                cont++;
+                retorno.add(linha);
+                linha = lerArq.readLine();
+            }
+            System.out.println(cont);
+            arq.close();
+        }
+        return retorno;
     }
     
 }

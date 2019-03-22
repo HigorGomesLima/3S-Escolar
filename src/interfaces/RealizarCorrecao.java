@@ -6,24 +6,22 @@
 package interfaces;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
-import objetos.Aluno;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import objetos.Ensino;
 import sistema.Agenda;
 
 /**
  *
  * @author cat-joao
  */
-public class Principal extends javax.swing.JFrame {
-
+public class RealizarCorrecao extends javax.swing.JFrame {
+    
     Agenda acesso;
-    public Principal() {
+    
+    public RealizarCorrecao() {
         initComponents();
         acesso = new Agenda();
     }
@@ -38,22 +36,14 @@ public class Principal extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        bCriarTurma = new javax.swing.JButton();
-        bCSVAluno = new javax.swing.JButton();
+        caixaLocal = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        bCriarTurma.setText("Adicionar e Criar Turma");
-        bCriarTurma.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                bCriarTurmaMouseClicked(evt);
-            }
-        });
-
-        bCSVAluno.setText("Gerar Aluno CSV");
-        bCSVAluno.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                bCSVAlunoMouseClicked(evt);
+        caixaLocal.setText("Escolher arquivo");
+        caixaLocal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                caixaLocalActionPerformed(evt);
             }
         });
 
@@ -62,19 +52,15 @@ public class Principal extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(bCriarTurma)
-                    .addComponent(bCSVAluno))
-                .addGap(0, 228, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(caixaLocal)
+                .addContainerGap(323, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(84, 84, 84)
-                .addComponent(bCriarTurma)
-                .addGap(18, 18, 18)
-                .addComponent(bCSVAluno)
-                .addContainerGap(504, Short.MAX_VALUE))
+                .addComponent(caixaLocal)
+                .addGap(0, 362, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -97,19 +83,19 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void bCSVAlunoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bCSVAlunoMouseClicked
+    private void caixaLocalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_caixaLocalActionPerformed
+        Ensino es = new Ensino();
+        JFileChooser fc = new JFileChooser();
+        fc.setMultiSelectionEnabled(true);
+        fc.setFileFilter(new FileNameExtensionFilter(".csv","csv"));
+        fc.showOpenDialog(this);
         try {
-            acesso.criarCSV("ListaAlunos.csv");
-        } catch (SQLException | IOException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            
+            acesso.correcao(fc.getSelectedFiles(),es);
+        } catch (IOException ex) {
+            Logger.getLogger(RealizarCorrecao.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_bCSVAlunoMouseClicked
-
-    private void bCriarTurmaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bCriarTurmaMouseClicked
-        JFrame jf = new CriarTurma(acesso);
-        jf.setVisible(true);
-        jf.show();
-    }//GEN-LAST:event_bCriarTurmaMouseClicked
+    }//GEN-LAST:event_caixaLocalActionPerformed
 
     /**
      * @param args the command line arguments
@@ -128,27 +114,26 @@ public class Principal extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RealizarCorrecao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RealizarCorrecao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RealizarCorrecao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RealizarCorrecao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Principal().setVisible(true);
+                new RealizarCorrecao().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton bCSVAluno;
-    private javax.swing.JButton bCriarTurma;
+    private javax.swing.JButton caixaLocal;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

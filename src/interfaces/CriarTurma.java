@@ -5,17 +5,18 @@ import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import objetos.Turma;
+import sistema.Agenda;
 import sistema.Persistencia;
 
 public class CriarTurma extends javax.swing.JFrame {
 
-    Persistencia db;
+    Agenda acesso;
     
-    public CriarTurma(Persistencia conection) {
+    public CriarTurma(Agenda conection) {
         initComponents();
         String ano = Calendar.getInstance().get(Calendar.YEAR)+"";
         this.caixaAno.setText(ano);
-        db = conection;
+        acesso = conection;
     }
 
 
@@ -133,21 +134,14 @@ public class CriarTurma extends javax.swing.JFrame {
         if("".equals(this.caixaAlunos.getText())){
             System.out.println("erro");
         }else{
-            try {
                 Turma nova = new Turma();
                 nova.setSerie((String) this.caixaSerie.getSelectedItem());
                 nova.setTurma((String) this.caixaTurma.getSelectedItem());
                 nova.setEnsino(this.ensino.getText());
                 nova.setAno(this.caixaAno.getText());
                 String texto = caixaAlunos.getText();
-                db.adicionarTurma(nova);
-                String codigo = nova.getSerie() + nova.getTurma() + nova.getAno();
-                String linha[] = texto.split("\\n");
-                for(int i = 0; i < linha.length; i++){
-                    String dados[] = linha[i].split("	");
-                    db.adicionarAluno(dados[0], dados[1], codigo);
-                }
-                
+            try {
+                acesso.criarTurma(nova, texto);
             } catch (SQLException ex) {
                 Logger.getLogger(CriarTurma.class.getName()).log(Level.SEVERE, null, ex);
             }
