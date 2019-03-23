@@ -6,11 +6,12 @@
 package interfaces;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import objetos.Ensino;
+import objetos.Tipo;
 import sistema.Agenda;
 
 /**
@@ -84,7 +85,15 @@ public class RealizarCorrecao extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void caixaLocalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_caixaLocalActionPerformed
-        Ensino es = new Ensino();
+        Tipo es = new Tipo();
+        es.setCodigo("1");
+        es.setBimestre("1");
+        es.setAno("2019");
+        es.setHumana(20);
+        es.setLinguagem(30);
+        es.setMatematica(10);
+        es.setNatureza(15);
+        es.setTotal(75);
         JFileChooser fc = new JFileChooser();
         fc.setMultiSelectionEnabled(true);
         fc.setFileFilter(new FileNameExtensionFilter(".csv","csv"));
@@ -92,7 +101,7 @@ public class RealizarCorrecao extends javax.swing.JFrame {
         try {
             
             acesso.correcao(fc.getSelectedFiles(),es);
-        } catch (IOException ex) {
+        } catch (IOException | SQLException ex) {
             Logger.getLogger(RealizarCorrecao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_caixaLocalActionPerformed

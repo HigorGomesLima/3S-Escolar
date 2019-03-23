@@ -99,8 +99,13 @@ public class Persistencia {
         arq.close();
     }
     
-    public void adicionarProva(Prova novo){
-        
+    public void adicionarProva(Prova novo) throws SQLException{
+        String dados = "'" + novo.getCodigo() + "','" + novo.getCodigoAluno() + "','" +  novo.getBimestre() + "','" + 
+                novo.getLinguagem() + "','" +  novo.getMatematica() + "','" + novo.getNatureza() + "','" +  novo.getHumana() + "'";
+        String update = "INSERT INTO Prova (codigo,aluno,bimestre,linguagem,matematica,naturais,humanas) VALUES ("+dados+")";
+        System.out.println(update);
+        Statement stmt = con.createStatement();
+        stmt.executeUpdate(update);
     }
     
     public List<String> lerCSV(File[] arquivo) throws FileNotFoundException, IOException{
@@ -110,13 +115,10 @@ public class Persistencia {
             FileReader arq = new FileReader(arquivo[i]);
             BufferedReader lerArq = new BufferedReader(arq);
             String linha = lerArq.readLine();
-            int cont = 0;
             while(linha != null){
-                cont++;
                 retorno.add(linha);
                 linha = lerArq.readLine();
             }
-            System.out.println(cont);
             arq.close();
         }
         return retorno;

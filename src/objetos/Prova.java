@@ -2,6 +2,7 @@ package objetos;
 
 public class Prova {
     
+    private String codigoTipo;
     private String codigo;
     private String codigoAluno;
     private String bimestre;
@@ -73,6 +74,14 @@ public class Prova {
 
     public void setHumana(int humana) {
         this.humana = humana;
+    }
+
+    public String getCodigoTipo() {
+        return codigoTipo;
+    }
+
+    public void setCodigoTipo(String codigoTipo) {
+        this.codigoTipo = codigoTipo;
     }
 
 }

@@ -1,21 +1,22 @@
 package objetos;
 
-public class Ensino {
+public class Tipo {
     
+    private String codigo;
     private String ano;
-    private String nome;
+    private String bimestre;
     private int total;
     private int linguagem;
     private int matematica;
     private int humana;
     private int natureza;
 
-    public String getNome() {
-        return nome;
+    public String getBimestre() {
+        return bimestre;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setBimestre(String nome) {
+        this.bimestre = nome;
     }
 
     public int getLinguagem() {
@@ -64,6 +65,14 @@ public class Ensino {
 
     public void setAno(String ano) {
         this.ano = ano;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
 }
