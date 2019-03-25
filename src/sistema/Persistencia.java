@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import objetos.Prova;
+import objetos.Tipo;
 import objetos.Turma;
 
 public class Persistencia {
@@ -100,9 +101,28 @@ public class Persistencia {
     }
     
     public void adicionarProva(Prova novo) throws SQLException{
-        String dados = "'" + novo.getCodigo() + "','" + novo.getCodigoAluno() + "','" +  novo.getBimestre() + "','" + 
+        String dados = "'" + novo.getCodigo() + "','" + novo.getCodigoAluno() + "','" +  novo.getTipo() + "','" + 
                 novo.getLinguagem() + "','" +  novo.getMatematica() + "','" + novo.getNatureza() + "','" +  novo.getHumana() + "'";
-        String update = "INSERT INTO Prova (codigo,aluno,bimestre,linguagem,matematica,naturais,humanas) VALUES ("+dados+")";
+        String update = "INSERT INTO Prova (codigo,aluno,tipo,linguagem,matematica,naturais,humanas) VALUES ("+dados+")";
+        System.out.println(update);
+        Statement stmt = con.createStatement();
+        stmt.executeUpdate(update);
+    }
+    
+    public String adicionarTipo(Tipo novo) throws SQLException{
+        String dados = "'" + novo.getAno() + "','" + novo.getBimestre() + "','" +  novo.getTotal() + "','" + 
+                novo.getLinguagem() + "','" +  novo.getMatematica() + "','" + novo.getNatureza() + "','" +  novo.getHumana() + "'";
+        String update = "INSERT INTO Tipo (ano,bimestre,total,linguagem,matematica,humana,natureza) VALUES ("+dados+")";
+        System.out.println(update);
+        Statement stmt = con.createStatement();
+        stmt.executeUpdate(update);
+        String r = getRS("SELECT codigo FROM Tipo WHERE codigo = (SELECT MAX(codigo)  FROM Tipo)").getString("codigo");
+        return r;
+    }
+    
+    public void adicionarRelacaoTipoTurma(String codigoTipo, String codigoTurma) throws SQLException{
+        String dados = "'" + codigoTurma + "','" +  codigoTipo + "','" + codigoTipo+codigoTurma + "'";
+        String update = "INSERT INTO RTipoTurma (turma,tipo,nome) VALUES ("+dados+")";
         System.out.println(update);
         Statement stmt = con.createStatement();
         stmt.executeUpdate(update);
@@ -120,6 +140,55 @@ public class Persistencia {
                 linha = lerArq.readLine();
             }
             arq.close();
+        }
+        return retorno;
+    }
+    
+    public List<Tipo> getTipos(String ano, String bimestre) throws SQLException{
+        List<Tipo> retorno = new ArrayList<>();
+        ResultSet rs = getRS("SELECT * FROM Tipo WHERE ano='"+ano+"' AND bimestre='"+bimestre+"'");
+        while(rs.next()){
+            Tipo novo = new Tipo();
+            novo.setCodigo(rs.getString("codigo"));
+            novo.setAno(rs.getString("ano"));
+            novo.setBimestre(rs.getString("bimestre"));
+            novo.setTotal(rs.getInt("total"));
+            novo.setLinguagem(rs.getInt("linguagem"));
+            novo.setMatematica(rs.getInt("matematica"));
+            novo.setHumana(rs.getInt("humana"));
+            novo.setNatureza(rs.getInt("natureza"));
+            retorno.add(novo);
+        }
+        return retorno;
+    }
+    
+    public Tipo getTipos(String codigo) throws SQLException{
+        Tipo novo = new Tipo();
+        ResultSet rs = getRS("SELECT * FROM Tipo WHERE codigo='"+codigo+"'");
+        while(rs.next()){
+            novo.setCodigo(rs.getString("codigo"));
+            novo.setAno(rs.getString("ano"));
+            novo.setBimestre(rs.getString("bimestre"));
+            novo.setTotal(rs.getInt("total"));
+            novo.setLinguagem(rs.getInt("linguagem"));
+            novo.setMatematica(rs.getInt("matematica"));
+            novo.setHumana(rs.getInt("humana"));
+            novo.setNatureza(rs.getInt("natureza"));
+        }
+        return novo;
+    }
+    
+    public List<Turma> getTurmas(String ano) throws SQLException{
+        ResultSet rs = getRS("SELECT * FROM Turma WHERE ano='"+ano+"' ORDER BY codigo ASC");
+        List<Turma> retorno = new ArrayList<>();
+        while(rs.next()){
+            Turma novo = new Turma();
+            novo.setCodigo(rs.getString("codigo"));
+            novo.setSerie(rs.getString("serie"));
+            novo.setTurma(rs.getString("turma"));
+            novo.setEnsino(rs.getString("ensino"));
+            novo.setAno(ano);
+            retorno.add(novo);
         }
         return retorno;
     }

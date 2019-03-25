@@ -1,13 +1,11 @@
 package objetos;
 
-import java.util.List;
-
 public class Turma {
+    private String codigo;
     private String serie;
     private String turma;
     private String ensino;
     private String ano;
-    private List<Aluno> alunos;
     
     public String getSerie() {
         return serie;
@@ -41,12 +39,12 @@ public class Turma {
         this.ano = ano;
     }
 
-    public List<Aluno> getAlunos() {
-        return alunos;
+    public String getCodigo() {
+        return codigo;
     }
 
-    public void setAlunos(List<Aluno> alunos) {
-        this.alunos = alunos;
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
 }

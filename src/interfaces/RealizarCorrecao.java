@@ -7,9 +7,15 @@ package interfaces;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
+import javax.swing.event.ListDataListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import objetos.Tipo;
 import sistema.Agenda;
@@ -25,6 +31,8 @@ public class RealizarCorrecao extends javax.swing.JFrame {
     public RealizarCorrecao() {
         initComponents();
         acesso = new Agenda();
+        String ano = Calendar.getInstance().get(Calendar.YEAR)+"";
+        this.caixaAno.setText(ano);
     }
 
     /**
@@ -38,6 +46,10 @@ public class RealizarCorrecao extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         caixaLocal = new javax.swing.JButton();
+        caixaBimestre = new javax.swing.JComboBox<>();
+        caixaAno = new javax.swing.JTextField();
+        caixaTipo = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -48,20 +60,47 @@ public class RealizarCorrecao extends javax.swing.JFrame {
             }
         });
 
+        caixaBimestre.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4" }));
+
+        caixaAno.setText("jTextField1");
+
+        jButton1.setText("Busca");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(caixaLocal)
-                .addContainerGap(323, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(caixaLocal)
+                    .addComponent(caixaAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(caixaBimestre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(41, 41, 41)
+                        .addComponent(jButton1))
+                    .addComponent(caixaTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(78, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(caixaAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(caixaBimestre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addGap(18, 18, 18)
+                .addComponent(caixaTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 195, Short.MAX_VALUE)
                 .addComponent(caixaLocal)
-                .addGap(0, 362, Short.MAX_VALUE))
+                .addGap(44, 44, 44))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -85,26 +124,33 @@ public class RealizarCorrecao extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void caixaLocalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_caixaLocalActionPerformed
-        Tipo es = new Tipo();
-        es.setCodigo("1");
-        es.setBimestre("1");
-        es.setAno("2019");
-        es.setHumana(20);
-        es.setLinguagem(30);
-        es.setMatematica(10);
-        es.setNatureza(15);
-        es.setTotal(75);
+        try {
         JFileChooser fc = new JFileChooser();
         fc.setMultiSelectionEnabled(true);
         fc.setFileFilter(new FileNameExtensionFilter(".csv","csv"));
         fc.showOpenDialog(this);
-        try {
-            
-            acesso.correcao(fc.getSelectedFiles(),es);
+        Tipo es = acesso.getTipo(((String)this.caixaTipo.getSelectedItem()).split("-")[0]);
+        acesso.correcao(fc.getSelectedFiles(),es);
         } catch (IOException | SQLException ex) {
             Logger.getLogger(RealizarCorrecao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_caixaLocalActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            List<Tipo> lista = acesso.getTipo(this.caixaAno.getText(), (String) this.caixaBimestre.getSelectedItem());
+            Iterator<Tipo> it = lista.iterator();
+            String tipos[] = new String[lista.size()];
+            for(int i = 0;it.hasNext();i++){
+                Tipo aux = it.next();
+                tipos[i] = aux.getCodigo() + "- " + aux.getTotal() + " questões";
+            }
+            DefaultComboBoxModel  md = new DefaultComboBoxModel(tipos);
+            this.caixaTipo.setModel(md);
+        } catch (SQLException ex) {
+            Logger.getLogger(RealizarCorrecao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -142,7 +188,11 @@ public class RealizarCorrecao extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField caixaAno;
+    private javax.swing.JComboBox<String> caixaBimestre;
     private javax.swing.JButton caixaLocal;
+    private javax.swing.JComboBox<String> caixaTipo;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

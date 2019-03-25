@@ -1,7 +1,18 @@
 package sistema;
 
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.Image;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -46,6 +57,55 @@ public class Agenda {
         }
 
     }
+    
+    public String[] getTurmas(String ano) throws SQLException{
+        List<Turma> lista = db.getTurmas(ano);
+        String retorno[] = new String[lista.size()];
+        for(int i = 0;i < lista.size(); i++){
+            String aux = lista.get(i).getSerie() + " " + lista.get(i).getTurma();
+            retorno[i] = aux;
+        }
+        return retorno;
+    }
+    
+    public void criarTipo(Tipo novo,Object[] turmas) throws SQLException{
+        String codigo = db.adicionarTipo(novo);
+        System.out.println(codigo);
+        for(int i = 0;i < turmas.length;i++){
+            String codigoTurma = ((String) turmas[i]).substring(0,1) + ((String) turmas[i]).substring(2, 5) + novo.getAno();
+            db.adicionarRelacaoTipoTurma(codigo, codigoTurma);
+        }
+    }
+    
+    public List<Tipo> getTipo(String ano, String bimestre) throws SQLException{
+        return db.getTipos(ano, bimestre);
+    }
+    
+    public Tipo getTipo(String codigo) throws SQLException{
+        return db.getTipos(codigo);
+    }
+    
+    public void criarPDF() throws FileNotFoundException, DocumentException, BadElementException, IOException{
+        Document document = new Document();
+        PdfWriter.getInstance(document, new FileOutputStream("documento.pdf"));
+        document.open();
+        Paragraph nomeEscola = new Paragraph();
+        nomeEscola.setFont(new Font(FontFamily.TIMES_ROMAN,16,Font.BOLD,BaseColor.BLACK));
+        nomeEscola.setAlignment(Element.ALIGN_CENTER);
+        nomeEscola.add("\n");
+        nomeEscola.add("\n");
+        nomeEscola.add("\n");
+        nomeEscola.add("Escola SESI Campina");
+        document.add(nomeEscola);
+        
+        Image img = Image.getInstance("logoSESI.png");
+        img.scaleAbsolute(150,80);
+        img.setAbsolutePosition(220, 760);
+        
+        document.add(img);
+        
+        document.close();
+    }
 
     public void correcao(File[] arquivo, Tipo tipo) throws IOException, SQLException {
         int q1 = 10;
@@ -53,6 +113,7 @@ public class Agenda {
         int q3 = q2 + tipo.getMatematica();
         int q4 = q3 + tipo.getNatureza();
         int q5 = q4 + tipo.getHumana();
+        System.out.println(q1+" "+q2+" "+q3+" "+q4+" "+q5);
         int total = tipo.getTotal();
         String protocolo = tipo.getAno() + tipo.getBimestre();
         List<String> texto = db.lerCSV(arquivo);
@@ -60,11 +121,10 @@ public class Agenda {
             String[] linha = it.next().split(",");
             if (!"Quiz Name".equals(linha[0])) {
                 Prova novo = new Prova();
-                novo.setCodigoTipo(tipo.getCodigo());
+                novo.setTipo(tipo.getCodigo());
                 novo.setCodigo(protocolo + linha[2]);
                 novo.setCodigoAluno(linha[2]);
                 novo.setAno(tipo.getAno());
-                novo.setBimestre(tipo.getBimestre());
                 int cont = 0;
                 for (int i = q1; i < q2; i++) {
                     if ("1".equals(linha[i])) {

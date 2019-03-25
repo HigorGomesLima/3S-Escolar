@@ -2,10 +2,9 @@ package objetos;
 
 public class Prova {
     
-    private String codigoTipo;
     private String codigo;
     private String codigoAluno;
-    private String bimestre;
+    private String tipo;
     private String ano;
     private int linguagem;
     private int matematica;
@@ -28,12 +27,12 @@ public class Prova {
         this.codigoAluno = codigoAluno;
     }
 
-    public String getBimestre() {
-        return bimestre;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setBimestre(String bimestre) {
-        this.bimestre = bimestre;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public String getAno() {
@@ -74,14 +73,6 @@ public class Prova {
 
     public void setHumana(int humana) {
         this.humana = humana;
-    }
-
-    public String getCodigoTipo() {
-        return codigoTipo;
-    }
-
-    public void setCodigoTipo(String codigoTipo) {
-        this.codigoTipo = codigoTipo;
     }
 
 }
