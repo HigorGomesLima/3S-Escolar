@@ -10,6 +10,8 @@ import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.Image;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfPCell;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -21,6 +23,7 @@ import java.util.List;
 import objetos.Aluno;
 import objetos.Tipo;
 import objetos.Prova;
+import objetos.ProvaAluno;
 import objetos.Turma;
 
 public class Agenda {
@@ -85,24 +88,129 @@ public class Agenda {
         return db.getTipos(codigo);
     }
     
-    public void criarPDF() throws FileNotFoundException, DocumentException, BadElementException, IOException{
+    public void criarPDF(String codigo) throws FileNotFoundException, DocumentException, BadElementException, IOException, SQLException{
         Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream("documento.pdf"));
+        PdfWriter.getInstance(document, new FileOutputStream("documento"+codigo+".pdf"));
         document.open();
         Paragraph nomeEscola = new Paragraph();
-        nomeEscola.setFont(new Font(FontFamily.TIMES_ROMAN,16,Font.BOLD,BaseColor.BLACK));
+        nomeEscola.setFont(new Font(FontFamily.TIMES_ROMAN,12,Font.BOLD,BaseColor.BLACK));
         nomeEscola.setAlignment(Element.ALIGN_CENTER);
-        nomeEscola.add("\n");
         nomeEscola.add("\n");
         nomeEscola.add("\n");
         nomeEscola.add("Escola SESI Campina");
         document.add(nomeEscola);
         
-        Image img = Image.getInstance("logoSESI.png");
-        img.scaleAbsolute(150,80);
-        img.setAbsolutePosition(220, 760);
         
+        Paragraph titulo = new Paragraph();
+        titulo.setFont(new Font(FontFamily.TIMES_ROMAN,18,Font.BOLD,BaseColor.BLACK));
+        titulo.setAlignment(Element.ALIGN_CENTER);
+        titulo.add("\n");
+        titulo.add("Planilha de Notas do Simulado "+codigo.substring(0, 1)+"º Ano "+codigo.substring(2, 4)+ " - I Bimestre");
+        document.add(titulo);
+        
+        Image img = Image.getInstance("logoSESI.png");
+        img.scaleAbsolute(110,58);
+        img.setAbsolutePosition(250, 780);
         document.add(img);
+        
+        PdfPTable tabela = new PdfPTable(12);
+        Font fontnormal = new Font(FontFamily.COURIER,8,Font.NORMAL,BaseColor.BLACK);
+        Font fontnegrito = new Font(FontFamily.COURIER,8,Font.BOLD,BaseColor.BLACK);
+        tabela.setWidthPercentage(110);
+        PdfPCell c1 = new PdfPCell(new Paragraph("Nº",fontnegrito));
+        PdfPCell c2 = new PdfPCell(new Paragraph("Matrícula",fontnegrito));
+        PdfPCell c3 = new PdfPCell(new Paragraph("Aluno",fontnegrito));
+        PdfPCell c4 = new PdfPCell(new Paragraph("Ling",fontnegrito));
+        PdfPCell c5 = new PdfPCell(new Paragraph("Nota",fontnegrito));
+        PdfPCell c6 = new PdfPCell(new Paragraph("Mat",fontnegrito));
+        PdfPCell c7 = new PdfPCell(new Paragraph("Nota",fontnegrito));
+        PdfPCell c8 = new PdfPCell(new Paragraph("C.Nat",fontnegrito));
+        PdfPCell c9 = new PdfPCell(new Paragraph("Nota",fontnegrito));
+        PdfPCell c10 = new PdfPCell(new Paragraph("C.Hum",fontnegrito));
+        PdfPCell c11 = new PdfPCell(new Paragraph("Nota",fontnegrito));
+        PdfPCell c12 = new PdfPCell(new Paragraph("Nota Extra",fontnegrito));
+        
+        tabela.addCell(c1);
+        tabela.addCell(c2);
+        tabela.addCell(c3);
+        tabela.addCell(c4);
+        tabela.addCell(c5);
+        tabela.addCell(c6);
+        tabela.addCell(c7);
+        tabela.addCell(c8);
+        tabela.addCell(c9);
+        tabela.addCell(c10);
+        tabela.addCell(c11);
+        tabela.addCell(c12);
+        tabela.setWidths(new float[]{(float)0.8,(float)1.8,7,1,1,1,1,(float)1.2,1,(float)1.2,1,2});
+        
+        List<Aluno> listaAluno = db.getAluno(codigo);
+        List<ProvaAluno> listaProva = db.getListadeProva(codigo);
+        String dados[] = new String[12];
+        Iterator<Aluno> it = listaAluno.iterator();
+        for(int i = 0;it.hasNext();i++){
+            Aluno atual = it.next();
+            dados[0] = (i+1)+"";
+            dados[1] = atual.getMatricula();
+            dados[2] = atual.getNome();
+            dados[3] = "0";
+            dados[4] = "0.0";
+            dados[5] = "0";
+            dados[6] = "0.0";
+            dados[7] = "0";
+            dados[8] = "0.0";
+            dados[9] = "0";
+            dados[10] = "0.0";
+            dados[11] = "0.0";
+            Iterator<ProvaAluno> itp = listaProva.iterator();
+            while(itp.hasNext()){
+                ProvaAluno pAtual = itp.next();
+                if(pAtual.getCodigoAluno().equals(atual.getMatricula())){
+                    dados[3] = pAtual.getLinguagem()+"";
+                    dados[4] = ((float)(pAtual.getLinguagem() / pAtual.getQlin() * 10))+"";
+                    dados[5] = pAtual.getMatematica()+"";
+                    dados[6] = ((float)(pAtual.getMatematica() / pAtual.getQmat()* 10))+"";
+                    dados[7] = pAtual.getNatureza()+"";
+                    dados[8] = ((float)(pAtual.getNatureza() / pAtual.getQnat()* 10))+"";
+                    dados[9] = pAtual.getHumana()+"";
+                    dados[10] = ((float)(pAtual.getHumana() / pAtual.getQhum()* 10))+"";
+                    int pontos = pAtual.getLinguagem() + pAtual.getMatematica() + pAtual.getNatureza() + pAtual.getHumana();
+                    float media = pontos/pAtual.getQtotal();
+                    if(media >= 0.5)
+                        dados[11] = "1.0"+pAtual.getQtotal();
+                    else
+                        dados[11] = "0.5"+pAtual.getQtotal();
+                }
+            }
+            PdfPCell d1 = new PdfPCell(new Paragraph(dados[0],fontnormal));
+            PdfPCell d2 = new PdfPCell(new Paragraph(dados[1],fontnormal));
+            PdfPCell d3 = new PdfPCell(new Paragraph(dados[2],fontnormal));
+            PdfPCell d4 = new PdfPCell(new Paragraph(dados[3],fontnormal));
+            PdfPCell d5 = new PdfPCell(new Paragraph(dados[4],fontnormal));
+            PdfPCell d6 = new PdfPCell(new Paragraph(dados[5],fontnormal));
+            PdfPCell d7 = new PdfPCell(new Paragraph(dados[6],fontnormal));
+            PdfPCell d8 = new PdfPCell(new Paragraph(dados[7],fontnormal));
+            PdfPCell d9 = new PdfPCell(new Paragraph(dados[8],fontnormal));
+            PdfPCell d10 = new PdfPCell(new Paragraph(dados[9],fontnormal));
+            PdfPCell d11 = new PdfPCell(new Paragraph(dados[10],fontnormal));
+            PdfPCell d12 = new PdfPCell(new Paragraph(dados[11],fontnegrito));
+            
+            tabela.addCell(d1);
+            tabela.addCell(d2);
+            tabela.addCell(d3);
+            tabela.addCell(d4);
+            tabela.addCell(d5);
+            tabela.addCell(d6);
+            tabela.addCell(d7);
+            tabela.addCell(d8);
+            tabela.addCell(d9);
+            tabela.addCell(d10);
+            tabela.addCell(d11);
+            tabela.addCell(d12);
+        }
+        
+        document.add(tabela);
+        
         
         document.close();
     }

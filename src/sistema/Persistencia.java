@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import objetos.Prova;
+import objetos.ProvaAluno;
 import objetos.Tipo;
 import objetos.Turma;
 
@@ -85,6 +86,42 @@ public class Persistencia {
             aux.setNome(rs.getString("nome"));
             aux.setTurma(rs.getString("turma"));
             retorno.add(aux);
+        }
+        return retorno;
+    }
+    
+    public List<ProvaAluno> getListadeProva(String turma) throws SQLException{
+        List<ProvaAluno> retorno = new ArrayList<>();
+        ResultSet rs = getRS("SELECT Prova.*,Aluno.nome,Tipo.linguagem AS ql,Tipo.matematica AS qm,Tipo.humana AS qh, Tipo.natureza AS qn, Tipo.total FROM Prova "
+                + "INNER JOIN Aluno ON Prova.aluno = Aluno.matricula "
+                + "INNER JOIN Turma ON Aluno.turma = Turma.codigo "
+                + "INNER JOIN Tipo ON Prova.tipo = Tipo.codigo WHERE Turma.codigo = '"+turma+"'");
+        while(rs.next()){
+            ProvaAluno pa = new ProvaAluno();
+            pa.setCodigoAluno(rs.getString("aluno"));
+            pa.setNomeAluno(rs.getString("nome"));
+            pa.setQlin(rs.getInt("ql"));
+            pa.setLinguagem(rs.getInt("linguagem"));
+            pa.setQmat(rs.getInt("qm"));
+            pa.setMatematica(rs.getInt("matematica"));
+            pa.setQhum(rs.getInt("qh"));
+            pa.setHumana(rs.getInt("humanas"));
+            pa.setQnat(rs.getInt("qn"));
+            pa.setNatureza(rs.getInt("naturais"));
+            pa.setQtotal(rs.getInt("total"));
+            retorno.add(pa);
+        }
+        return retorno;
+    }
+    
+    public List<Aluno> getAluno(String codigo) throws SQLException{
+        List<Aluno> retorno = new ArrayList<>();
+        ResultSet rs = getRS("SELECT * FROM Aluno WHERE turma='"+codigo+"'");
+        while(rs.next()){
+            Aluno pa = new Aluno();
+            pa.setMatricula(rs.getString("matricula"));
+            pa.setNome(rs.getString("nome"));
+            retorno.add(pa);
         }
         return retorno;
     }
