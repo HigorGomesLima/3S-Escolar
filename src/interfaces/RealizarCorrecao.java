@@ -130,7 +130,8 @@ public class RealizarCorrecao extends javax.swing.JFrame {
         fc.setFileFilter(new FileNameExtensionFilter(".csv","csv"));
         fc.showOpenDialog(this);
         Tipo es = acesso.getTipo(((String)this.caixaTipo.getSelectedItem()).split("-")[0]);
-        acesso.correcao(fc.getSelectedFiles(),es);
+        acesso.correcaoMedio(fc.getSelectedFiles(),es);
+        //acesso.correcao(fc.getSelectedFiles(),es);
         } catch (IOException | SQLException ex) {
             Logger.getLogger(RealizarCorrecao.class.getName()).log(Level.SEVERE, null, ex);
         }

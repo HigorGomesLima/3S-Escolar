@@ -89,7 +89,7 @@ public class CriarTipo extends javax.swing.JFrame {
             }
         });
 
-        caixaTotal.setText("45");
+        caixaTotal.setText("70");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -193,19 +193,23 @@ public class CriarTipo extends javax.swing.JFrame {
     }//GEN-LAST:event_caixaAnoCaretUpdate
 
     private void caixaLing1CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_caixaLing1CaretUpdate
-        //setTotal();
+        if(!"".equals(this.caixaLing1.getText()))
+            setTotal();
     }//GEN-LAST:event_caixaLing1CaretUpdate
 
     private void caixaMatCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_caixaMatCaretUpdate
-        //setTotal();
+        if(!"".equals(this.caixaMat.getText()))
+            setTotal();
     }//GEN-LAST:event_caixaMatCaretUpdate
 
     private void caixaNatCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_caixaNatCaretUpdate
-        //setTotal();
+        if(!"".equals(this.caixaNat.getText()))
+            setTotal();
     }//GEN-LAST:event_caixaNatCaretUpdate
 
     private void caixaHumCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_caixaHumCaretUpdate
-        //setTotal();
+        if(!"".equals(this.caixaHum.getText()))
+            setTotal();
     }//GEN-LAST:event_caixaHumCaretUpdate
    
     /**
