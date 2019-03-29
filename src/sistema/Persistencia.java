@@ -79,7 +79,7 @@ public class Persistencia {
     
     public List<Aluno> ListarAluno() throws SQLException{
         List<Aluno> retorno = new ArrayList<>();
-        ResultSet rs = getRS("SELECT * FROM Aluno ORDER BY nome ASC");
+        ResultSet rs = getRS("SELECT * FROM Aluno WHERE turma = '30032019' ORDER BY nome ASC");
         while(rs.next()){
             Aluno aux = new Aluno();
             aux.setMatricula(rs.getString("matricula"));
