@@ -123,26 +123,18 @@ public class Agenda {
         PdfPCell c2 = new PdfPCell(new Paragraph("Matrícula",fontnegrito));
         PdfPCell c3 = new PdfPCell(new Paragraph("Aluno",fontnegrito));
         PdfPCell c4 = new PdfPCell(new Paragraph("Ling",fontnegrito));
-        //PdfPCell c5 = new PdfPCell(new Paragraph("Média",fontnegrito));
         PdfPCell c6 = new PdfPCell(new Paragraph("Mat",fontnegrito));
-        //PdfPCell c7 = new PdfPCell(new Paragraph("Média",fontnegrito));
         PdfPCell c8 = new PdfPCell(new Paragraph("C.Nat",fontnegrito));
-        //PdfPCell c9 = new PdfPCell(new Paragraph("Média",fontnegrito));
         PdfPCell c10 = new PdfPCell(new Paragraph("C.Hum",fontnegrito));
-        //PdfPCell c11 = new PdfPCell(new Paragraph("Média",fontnegrito));
         PdfPCell c12 = new PdfPCell(new Paragraph("Nota",fontnegrito));
         
         tabela.addCell(c1);
         tabela.addCell(c2);
         tabela.addCell(c3);
         tabela.addCell(c4);
-        //tabela.addCell(c5);
         tabela.addCell(c6);
-        //tabela.addCell(c7);
         tabela.addCell(c8);
-        //tabela.addCell(c9);
         tabela.addCell(c10);
-        //tabela.addCell(c11);
         tabela.addCell(c12);
         tabela.setWidths(new float[]{(float)0.8,(float)1.8,7,1,1,(float)1.2,(float)1.2,(float)1.4});
         
@@ -156,26 +148,18 @@ public class Agenda {
             dados[1] = atual.getMatricula();
             dados[2] = atual.getNome();
             dados[3] = "0";
-            //dados[4] = "0.0";
             dados[5] = "0";
-            //dados[6] = "0.0";
             dados[7] = "0";
-            //dados[8] = "0.0";
             dados[9] = "0";
-            //dados[10] = "0.0";
             dados[11] = "0.0";
             Iterator<ProvaAluno> itp = listaProva.iterator();
             while(itp.hasNext()){
                 ProvaAluno pAtual = itp.next();
                 if(pAtual.getCodigoAluno().equals(atual.getMatricula())){
                     dados[3] = pAtual.getLinguagem()+"";
-                    //dados[4] = ((float)(pAtual.getLinguagem() / pAtual.getQlin() * 10))+"";
                     dados[5] = pAtual.getMatematica()+"";
-                    //dados[6] = ((float)(pAtual.getMatematica() / pAtual.getQmat()* 10))+"";
                     dados[7] = pAtual.getNatureza()+"";
-                    //dados[8] = ((float)(pAtual.getNatureza() / pAtual.getQnat()* 10))+"";
                     dados[9] = pAtual.getHumana()+"";
-                    //dados[10] = ((float)(pAtual.getHumana() / pAtual.getQhum()* 10))+"";
                     int pontos = pAtual.getLinguagem() + pAtual.getMatematica() + pAtual.getNatureza() + pAtual.getHumana();
                     float media = pontos/floatValue(pAtual.getQtotal());
                     if(media <= 0.25)
@@ -192,26 +176,18 @@ public class Agenda {
             PdfPCell d2 = new PdfPCell(new Paragraph(dados[1],fontnormal));
             PdfPCell d3 = new PdfPCell(new Paragraph(dados[2],fontnormal));
             PdfPCell d4 = new PdfPCell(new Paragraph(dados[3],fontnormal));
-            //PdfPCell d5 = new PdfPCell(new Paragraph(dados[4],fontnormal));
             PdfPCell d6 = new PdfPCell(new Paragraph(dados[5],fontnormal));
-            //PdfPCell d7 = new PdfPCell(new Paragraph(dados[6],fontnormal));
             PdfPCell d8 = new PdfPCell(new Paragraph(dados[7],fontnormal));
-            //PdfPCell d9 = new PdfPCell(new Paragraph(dados[8],fontnormal));
             PdfPCell d10 = new PdfPCell(new Paragraph(dados[9],fontnormal));
-            //PdfPCell d11 = new PdfPCell(new Paragraph(dados[10],fontnormal));
             PdfPCell d12 = new PdfPCell(new Paragraph(dados[11],fontnegrito));
             
             tabela.addCell(d1);
             tabela.addCell(d2);
             tabela.addCell(d3);
             tabela.addCell(d4);
-            //tabela.addCell(d5);
             tabela.addCell(d6);
-            //tabela.addCell(d7);
             tabela.addCell(d8);
-            //tabela.addCell(d9);
             tabela.addCell(d10);
-            //tabela.addCell(d11);
             tabela.addCell(d12);
         }
         
@@ -255,26 +231,18 @@ public class Agenda {
         PdfPCell c2 = new PdfPCell(new Paragraph("Matrícula",fontnegrito));
         PdfPCell c3 = new PdfPCell(new Paragraph("Aluno",fontnegrito));
         PdfPCell c4 = new PdfPCell(new Paragraph("Mat",fontnegrito));
-        //PdfPCell c5 = new PdfPCell(new Paragraph("Média",fontnegrito));
         PdfPCell c6 = new PdfPCell(new Paragraph("Ling",fontnegrito));
-        //PdfPCell c7 = new PdfPCell(new Paragraph("Média",fontnegrito));
         PdfPCell c8 = new PdfPCell(new Paragraph("C.Nat",fontnegrito));
-        //PdfPCell c9 = new PdfPCell(new Paragraph("Média",fontnegrito));
         PdfPCell c10 = new PdfPCell(new Paragraph("C.Hum",fontnegrito));
-        //PdfPCell c11 = new PdfPCell(new Paragraph("Média",fontnegrito));
         PdfPCell c12 = new PdfPCell(new Paragraph("Nota",fontnegrito));
         
         tabela.addCell(c1);
         tabela.addCell(c2);
         tabela.addCell(c3);
         tabela.addCell(c4);
-        //tabela.addCell(c5);
         tabela.addCell(c6);
-        //tabela.addCell(c7);
         tabela.addCell(c8);
-        //tabela.addCell(c9);
         tabela.addCell(c10);
-        //tabela.addCell(c11);
         tabela.addCell(c12);
         tabela.setWidths(new float[]{(float)0.8,(float)1.8,7,1,1,(float)1.2,(float)1.2,(float)1.4});
         
@@ -288,26 +256,18 @@ public class Agenda {
             dados[1] = atual.getMatricula();
             dados[2] = atual.getNome();
             dados[3] = "0";
-            //dados[4] = "0.0";
             dados[5] = "0";
-            //dados[6] = "0.0";
             dados[7] = "0";
-            //dados[8] = "0.0";
             dados[9] = "0";
-            //dados[10] = "0.0";
             dados[11] = "0.0";
             Iterator<ProvaAluno> itp = listaProva.iterator();
             while(itp.hasNext()){
                 ProvaAluno pAtual = itp.next();
                 if(pAtual.getCodigoAluno().equals(atual.getMatricula())){
                     dados[5] = pAtual.getLinguagem()+"";
-                    //dados[6] = ((floatValue(pAtual.getLinguagem() / floatValue(pAtual.getQlin())*10))+"").substring(0,4);
                     dados[3] = pAtual.getMatematica()+"";
-                    //dados[4] = (floatValue(pAtual.getMatematica() / floatValue(pAtual.getQmat())*10))+"";
                     dados[7] = pAtual.getNatureza()+"";
-                    //dados[8] = (floatValue(pAtual.getNatureza() / floatValue(pAtual.getQnat())* 10))+"";
                     dados[9] = pAtual.getHumana()+"";
-                    //dados[10] = (floatValue(pAtual.getHumana() / floatValue(pAtual.getQhum())* 10))+"";
                     int pontos = pAtual.getLinguagem() + pAtual.getMatematica() + pAtual.getNatureza() + pAtual.getHumana();
                     float media = pontos/floatValue(pAtual.getQtotal());
                     if(media <= 0.25)
@@ -324,26 +284,18 @@ public class Agenda {
             PdfPCell d2 = new PdfPCell(new Paragraph(dados[1],fontnormal));
             PdfPCell d3 = new PdfPCell(new Paragraph(dados[2],fontnormal));
             PdfPCell d4 = new PdfPCell(new Paragraph(dados[3],fontnormal));
-            //PdfPCell d5 = new PdfPCell(new Paragraph(dados[4],fontnormal));
             PdfPCell d6 = new PdfPCell(new Paragraph(dados[5],fontnormal));
-            //PdfPCell d7 = new PdfPCell(new Paragraph(dados[6],fontnormal));
             PdfPCell d8 = new PdfPCell(new Paragraph(dados[7],fontnormal));
-            //PdfPCell d9 = new PdfPCell(new Paragraph(dados[8],fontnormal));
             PdfPCell d10 = new PdfPCell(new Paragraph(dados[9],fontnormal));
-            //PdfPCell d11 = new PdfPCell(new Paragraph(dados[10],fontnormal));
             PdfPCell d12 = new PdfPCell(new Paragraph(dados[11],fontnegrito));
             
             tabela.addCell(d1);
             tabela.addCell(d2);
             tabela.addCell(d3);
             tabela.addCell(d4);
-            //tabela.addCell(d5);
             tabela.addCell(d6);
-            //tabela.addCell(d7);
             tabela.addCell(d8);
-            //tabela.addCell(d9);
             tabela.addCell(d10);
-            //tabela.addCell(d11);
             tabela.addCell(d12);
         }
         
@@ -452,4 +404,23 @@ public class Agenda {
             }
         }
     }
+    
+    public void corrigirProvaBrasil(File[] arquivo,String turma,String modulo) throws IOException{
+        List<String> listaProva = db.lerCSV(arquivo);
+        Iterator<String> it = listaProva.iterator();
+        String nomeMateria = "";
+        String[] gabarito = new String[20];
+        if(modulo.equals("matematica") && turma.substring(0, 1).equals("9")){
+            nomeMateria = "Matemática";
+            gabarito[0] = "D";gabarito[1] = "C";gabarito[2] = "B";gabarito[3] = "A";gabarito[4] = "B";
+            gabarito[5] = "B";gabarito[6] = "B";gabarito[7] = "D";gabarito[8] = "D";gabarito[9] = "D";
+            gabarito[10] = "D";gabarito[11] = "D";gabarito[12] = "D";gabarito[13] = "D";gabarito[14] = "D";
+            gabarito[15] = "D";gabarito[16] = "D";gabarito[17] = "D";gabarito[18] = "D";gabarito[19] = "D";
+        }
+        
+        for(int i = 1;it.hasNext();i++){
+            
+        }
+    }
+    
 }
