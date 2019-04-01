@@ -15,8 +15,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import objetos.Aluno;
+import objetos.Tipo;
 import sistema.Agenda;
 
 /**
@@ -44,6 +47,7 @@ public class Principal extends javax.swing.JFrame {
         bCriarTurma = new javax.swing.JButton();
         bCSVAluno = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        botaoPB = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,6 +72,13 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        botaoPB.setText("Prova Brasil");
+        botaoPB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoPBActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -76,7 +87,8 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(bCriarTurma)
                     .addComponent(bCSVAluno)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(botaoPB))
                 .addGap(0, 228, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -88,7 +100,9 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(bCSVAluno)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addContainerGap(463, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(botaoPB)
+                .addContainerGap(429, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -167,6 +181,21 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void botaoPBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoPBActionPerformed
+        try {
+        JFileChooser fc = new JFileChooser();
+        fc.setMultiSelectionEnabled(true);
+        fc.setFileFilter(new FileNameExtensionFilter(".csv","csv"));
+        fc.showOpenDialog(this);
+        acesso.corrigirProvaBrasil(fc.getSelectedFiles(), "70042019", "matematica");
+        //acesso.correcao(fc.getSelectedFiles(),es);
+        } catch (IOException | SQLException ex) {
+            Logger.getLogger(RealizarCorrecao.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DocumentException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_botaoPBActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -205,6 +234,7 @@ public class Principal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bCSVAluno;
     private javax.swing.JButton bCriarTurma;
+    private javax.swing.JButton botaoPB;
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables

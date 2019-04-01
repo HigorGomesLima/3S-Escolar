@@ -168,12 +168,12 @@ public class Persistencia {
     public List<String> lerCSV(File[] arquivo) throws FileNotFoundException, IOException{
         List<String> retorno = new ArrayList<>();
         for(int i = 0; i < arquivo.length; i++){
-            System.out.println(arquivo[i].getName());
             FileReader arq = new FileReader(arquivo[i]);
             BufferedReader lerArq = new BufferedReader(arq);
             String linha = lerArq.readLine();
             while(linha != null){
                 retorno.add(linha);
+                System.out.println(linha);
                 linha = lerArq.readLine();
             }
             arq.close();

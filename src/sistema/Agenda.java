@@ -10,6 +10,7 @@ import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfPCell;
 import java.io.File;
@@ -405,22 +406,88 @@ public class Agenda {
         }
     }
     
-    public void corrigirProvaBrasil(File[] arquivo,String turma,String modulo) throws IOException{
+    public void corrigirProvaBrasil(File[] arquivo,String turma,String modulo) throws IOException, SQLException, DocumentException{
         List<String> listaProva = db.lerCSV(arquivo);
-        Iterator<String> it = listaProva.iterator();
+        List<Aluno> listaAluno = db.getAluno(turma);
+        Iterator<Aluno> it = listaAluno.iterator();
         String nomeMateria = "";
+        Document document = new Document(PageSize.A4.rotate());
+        PdfWriter.getInstance(document, new FileOutputStream("ProvaBrasil "+modulo+" "+turma+".pdf"));
+        document.open();
         String[] gabarito = new String[20];
-        if(modulo.equals("matematica") && turma.substring(0, 1).equals("9")){
+        if(modulo.equals("matematica") && turma.substring(0, 1).equals("7")){
             nomeMateria = "Matemática";
             gabarito[0] = "D";gabarito[1] = "C";gabarito[2] = "B";gabarito[3] = "A";gabarito[4] = "B";
             gabarito[5] = "B";gabarito[6] = "B";gabarito[7] = "D";gabarito[8] = "D";gabarito[9] = "D";
             gabarito[10] = "D";gabarito[11] = "D";gabarito[12] = "D";gabarito[13] = "D";gabarito[14] = "D";
             gabarito[15] = "D";gabarito[16] = "D";gabarito[17] = "D";gabarito[18] = "D";gabarito[19] = "D";
         }
+        PdfPTable tabela = new PdfPTable(23);
+        Font fontnormal = new Font(FontFamily.TIMES_ROMAN,8,Font.NORMAL,BaseColor.BLACK);
+        Font fontnegrito = new Font(FontFamily.TIMES_ROMAN,8,Font.BOLD,BaseColor.BLACK);
+        Paragraph titulo = new Paragraph("TABELA DE ACERTOS",new Font(FontFamily.TIMES_ROMAN,12,Font.BOLD,BaseColor.BLACK));
+        document.add(titulo);
+        document.add(new Paragraph("\n"));
+        tabela.setWidthPercentage(100);
+        tabela.setWidths(new float[]{(float)0.1,(float)1.6,(float)0.1,(float)0.1,(float)0.1,(float)0.1,(float)0.1,(float)0.1,(float)0.1,(float)0.1,(float)0.1,(float)0.1,(float)0.1,(float)0.1,(float)0.1,(float)0.1,(float)0.1,(float)0.1,(float)0.1,(float)0.1,(float)0.1,(float)0.1,(float)0.2});
         
-        for(int i = 1;it.hasNext();i++){
-            
+        PdfPCell aluno = new PdfPCell(new Paragraph("Alunos",new Font(FontFamily.TIMES_ROMAN,10,Font.BOLD,BaseColor.BLACK)));
+        aluno.setHorizontalAlignment(Element.ALIGN_CENTER);
+        aluno.setRowspan(2);
+        aluno.setColspan(2);
+        tabela.addCell(aluno);
+        
+        for(int k = 1;k < 21;k++){
+            PdfPCell gab = new PdfPCell(new Paragraph(k+"",fontnormal));
+            gab.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tabela.addCell(gab);
         }
+        
+        PdfPCell tot = new PdfPCell(new Paragraph("Total de Acertos",fontnormal));
+        tot.setRowspan(2);
+        tot.setHorizontalAlignment(Element.ALIGN_CENTER);
+        tabela.addCell(tot);
+        for(int k = 0;k < 20;k++){
+            PdfPCell gab = new PdfPCell(new Paragraph(gabarito[k],fontnormal));
+            gab.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tabela.addCell(gab);
+        }
+        int i = 1;
+        while(it.hasNext()){
+            Aluno atual = it.next();
+            Iterator<String> itp = listaProva.iterator();
+            while(itp.hasNext()){
+                String[] prova = (itp.next()).split(",");
+                if(prova[3].equals(atual.getMatricula())){
+                    int cont = 0;
+                    String dados[] = new String[23];
+                    dados[0] = i+"";
+                    dados[1] = atual.getNome();
+                    for(int j = 2; j < 22;j++){
+                        if("1".equals(prova[(8+j)])){
+                            cont++;
+                            dados[j] = "X";
+                        }else{
+                            dados[j] = " ";
+                        }
+                    }
+                    dados[22] = cont+"";
+                    PdfPCell numero = new PdfPCell(new Paragraph(dados[0],fontnegrito));
+                    tabela.addCell(numero);
+                    PdfPCell nome = new PdfPCell(new Paragraph(dados[1],fontnormal));
+                    tabela.addCell(nome);
+                    for(int j = 2;j < 23;j++){
+                        PdfPCell cell = new PdfPCell(new Paragraph(dados[j],fontnormal));
+                        
+                        tabela.addCell(cell);
+                    }
+                    i++;
+                    break;
+                }
+            }
+        }
+        document.add(tabela);
+        document.close();
     }
     
 }
