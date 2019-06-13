@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import objetos.Aluno;
 import objetos.Tipo;
@@ -141,40 +142,40 @@ public class Principal extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            acesso.criarPDF("60012019");
-            acesso.criarPDF("60022019");
-            acesso.criarPDF("60032019");
-            acesso.criarPDF("60042019");
-            acesso.criarPDF("70012019");
-            acesso.criarPDF("70022019");
-            acesso.criarPDF("70032019");
-            acesso.criarPDF("70042019");
-            acesso.criarPDF("80012019");
-            acesso.criarPDF("80022019");
-            acesso.criarPDF("80032019");
-            acesso.criarPDF("80042019");
-            acesso.criarPDF("90012019");
-            acesso.criarPDF("90022019");
-            acesso.criarPDF("90032019");
-            acesso.criarPDF("90042019");
-            acesso.criarPDF("90052019");
-//ok            acesso.criarPDFMedio("10012019");
-//OK            acesso.criarPDFMedio("10022019");
- //OK           acesso.criarPDFMedio("10032019");
-//OK            acesso.criarPDFMedio("10042019");
-//OK            acesso.criarPDFMedio("10052019");
-//            acesso.criarPDFMedio("10062019");
-//OK            acesso.criarPDFMedio("20012019");
-//ok            acesso.criarPDFMedio("20022019");
-//ok            acesso.criarPDFMedio("20032019");
-//ok            acesso.criarPDFMedio("20042019");
-//ok            acesso.criarPDFMedio("20052019");
-//ok            acesso.criarPDFMedio("20062019");
-//            acesso.criarPDFMedio("30012019");
-//            acesso.criarPDFMedio("30022019");
-//            acesso.criarPDFMedio("30032019");
-//            acesso.criarPDFMedio("30042019");
-//            acesso.criarPDFMedio("30052019");
+           // acesso.criarPDF("60012019");
+            //acesso.criarPDF("60022019");
+           // acesso.criarPDF("60032019");
+          //  acesso.criarPDF("60042019");
+         //   acesso.criarPDF("70012019");
+         //   acesso.criarPDF("70022019");
+        //    acesso.criarPDF("70032019");
+         //   acesso.criarPDF("70042019");
+         //   acesso.criarPDF("80012019");
+         //   acesso.criarPDF("80022019");
+         //   acesso.criarPDF("80032019");
+         //   acesso.criarPDF("80042019");
+         //   acesso.criarPDF("90012019");
+         //   acesso.criarPDF("90022019");
+          //  acesso.criarPDF("90032019");
+        //   acesso.criarPDF("90042019");
+          //  acesso.criarPDF("90052019");
+         // acesso.criarPDFMedio("10012019");
+          // acesso.criarPDFMedio("10022019");
+         //  acesso.criarPDFMedio("10032019");
+            acesso.criarPDFMedio("10042019");
+          // acesso.criarPDFMedio("10052019");
+         //   acesso.criarPDFMedio("10062019");
+          // acesso.criarPDFMedio("20012019");
+          //  acesso.criarPDFMedio("20022019");
+         //  acesso.criarPDFMedio("20032019");
+           acesso.criarPDFMedio("20042019");
+          //  acesso.criarPDFMedio("20052019");
+            acesso.criarPDFMedio("20062019");
+            acesso.criarPDFMedio("30012019");
+           // acesso.criarPDFMedio("30022019");
+            acesso.criarPDFMedio("30032019");
+           // acesso.criarPDFMedio("30042019");
+            acesso.criarPDFMedio("30052019");
             
         } catch (DocumentException | IOException | SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -187,8 +188,9 @@ public class Principal extends javax.swing.JFrame {
         fc.setMultiSelectionEnabled(true);
         fc.setFileFilter(new FileNameExtensionFilter(".csv","csv"));
         fc.showOpenDialog(this);
-        acesso.corrigirProvaBrasil(fc.getSelectedFiles(), "70042019", "matematica");
-        //acesso.correcao(fc.getSelectedFiles(),es);
+        String turma = (String)JOptionPane.showInputDialog(null,"Selecione a turma","Seleção",JOptionPane.QUESTION_MESSAGE,null,(new String[]{"30012019","30022019","30032019","30042019","30052019","90012019","90022019","90032019","90042019","90052019"}),"30012019");
+        String materia = (String)JOptionPane.showInputDialog(null,"Selecione a materia","Seleção",JOptionPane.QUESTION_MESSAGE,null,(new String[]{"portugues","matematica"}),"portugues");
+        acesso.corrigirProvaBrasil(fc.getSelectedFiles(), turma,materia);
         } catch (IOException | SQLException ex) {
             Logger.getLogger(RealizarCorrecao.class.getName()).log(Level.SEVERE, null, ex);
         } catch (DocumentException ex) {

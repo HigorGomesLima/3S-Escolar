@@ -411,17 +411,37 @@ public class Agenda {
         List<Aluno> listaAluno = db.getAluno(turma);
         Iterator<Aluno> it = listaAluno.iterator();
         String nomeMateria = "";
-        Document document = new Document(PageSize.A4.rotate());
-        PdfWriter.getInstance(document, new FileOutputStream("ProvaBrasil "+modulo+" "+turma+".pdf"));
-        document.open();
         String[] gabarito = new String[20];
-        if(modulo.equals("matematica") && turma.substring(0, 1).equals("7")){
+        if(modulo.equals("matematica") && turma.substring(0, 1).equals("9")){
             nomeMateria = "Matemática";
             gabarito[0] = "D";gabarito[1] = "C";gabarito[2] = "B";gabarito[3] = "A";gabarito[4] = "B";
-            gabarito[5] = "B";gabarito[6] = "B";gabarito[7] = "D";gabarito[8] = "D";gabarito[9] = "D";
-            gabarito[10] = "D";gabarito[11] = "D";gabarito[12] = "D";gabarito[13] = "D";gabarito[14] = "D";
-            gabarito[15] = "D";gabarito[16] = "D";gabarito[17] = "D";gabarito[18] = "D";gabarito[19] = "D";
+            gabarito[5] = "B";gabarito[6] = "B";gabarito[7] = "B";gabarito[8] = "B";gabarito[9] = "D";
+            gabarito[10] = "B";gabarito[11] = "A";gabarito[12] = "C";gabarito[13] = "D";gabarito[14] = "C";
+            gabarito[15] = "B";gabarito[16] = "D";gabarito[17] = "B";gabarito[18] = "C";gabarito[19] = "D";
+        }else if(modulo.equals("portugues") && turma.substring(0, 1).equals("3")){
+            nomeMateria = "Língua Portuguesa";
+            gabarito[0] = "C";gabarito[1] = "E";gabarito[2] = "A";gabarito[3] = "C";gabarito[4] = "D";
+            gabarito[5] = "B";gabarito[6] = "C";gabarito[7] = "C";gabarito[8] = "D";gabarito[9] = "B";
+            gabarito[10] = "C";gabarito[11] = "A";gabarito[12] = "D";gabarito[13] = "B";gabarito[14] = "C";
+            gabarito[15] = "B";gabarito[16] = "B";gabarito[17] = "A";gabarito[18] = "D";gabarito[19] = "C";
+        }else if(modulo.equals("matematica") && turma.substring(0, 1).equals("3")){
+            nomeMateria = "Matemática";
+            gabarito[0] = "C";gabarito[1] = "B";gabarito[2] = "B";gabarito[3] = "E";gabarito[4] = "D";
+            gabarito[5] = "B";gabarito[6] = "D";gabarito[7] = "C";gabarito[8] = "D";gabarito[9] = "D";
+            gabarito[10] = "D";gabarito[11] = "B";gabarito[12] = "C";gabarito[13] = "D";gabarito[14] = "C";
+            gabarito[15] = "A";gabarito[16] = "A";gabarito[17] = "A";gabarito[18] = "B";gabarito[19] = "D";
+        }else if(modulo.equals("portugues") && turma.substring(0, 1).equals("9")){
+            nomeMateria = "Língua Portuguesa";
+            gabarito[0] = "A";gabarito[1] = "A";gabarito[2] = "C";gabarito[3] = "B";gabarito[4] = "A";
+            gabarito[5] = "C";gabarito[6] = "A";gabarito[7] = "D";gabarito[8] = "D";gabarito[9] = "B";
+            gabarito[10] = "C";gabarito[11] = "B";gabarito[12] = "A";gabarito[13] = "D";gabarito[14] = "B";
+            gabarito[15] = "C";gabarito[16] = "B";gabarito[17] = "A";gabarito[18] = "A";gabarito[19] = "D";
         }
+        
+        Document document = new Document(PageSize.A4.rotate());
+        PdfWriter.getInstance(document, new FileOutputStream("ProvaBrasil "+nomeMateria+" "+turma.substring(0, 4)+".pdf"));
+        document.open();
+        
         PdfPTable tabela = new PdfPTable(23);
         Font fontnormal = new Font(FontFamily.TIMES_ROMAN,8,Font.NORMAL,BaseColor.BLACK);
         Font fontnegrito = new Font(FontFamily.TIMES_ROMAN,8,Font.BOLD,BaseColor.BLACK);
@@ -478,7 +498,7 @@ public class Agenda {
                     tabela.addCell(nome);
                     for(int j = 2;j < 23;j++){
                         PdfPCell cell = new PdfPCell(new Paragraph(dados[j],fontnormal));
-                        
+                        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                         tabela.addCell(cell);
                     }
                     i++;
