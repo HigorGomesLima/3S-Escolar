@@ -107,7 +107,7 @@ public class Agenda {
         titulo.setFont(new Font(FontFamily.TIMES_ROMAN,18,Font.BOLD,BaseColor.BLACK));
         titulo.setAlignment(Element.ALIGN_CENTER);
         titulo.add("\n");
-        titulo.add("Planilha de Notas do Simulado "+codigo.substring(0, 1)+"º Ano "+codigo.substring(2, 4)+ " - I Bimestre");
+        titulo.add("Planilha de Notas do Simulado "+codigo.substring(0, 1)+"º Ano "+codigo.substring(2, 4)+ " - II Bimestre");
         document.add(titulo);
         
         Image img = Image.getInstance("logoSESI.png");
@@ -215,7 +215,7 @@ public class Agenda {
         titulo.setFont(new Font(FontFamily.TIMES_ROMAN,18,Font.BOLD,BaseColor.BLACK));
         titulo.setAlignment(Element.ALIGN_CENTER);
         titulo.add("\n");
-        titulo.add("Planilha de Notas do Simulado "+codigo.substring(0, 1)+"º Ano "+codigo.substring(2, 4)+ " - I Bimestre");
+        titulo.add("Planilha de Notas do Simulado "+codigo.substring(0, 1)+"º Ano "+codigo.substring(2, 4)+ " - II Bimestre");
         document.add(titulo);
         
         Image img = Image.getInstance("logoSESI.png");
